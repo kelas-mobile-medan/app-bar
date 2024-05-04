@@ -1,3 +1,4 @@
+import 'package:app_bar_application/pageTwo.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -7,80 +8,116 @@ void main() {
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
-  void submitLogin(String value) {
-    print(value);
+  @override
+  Widget build(BuildContext context) {
+    print('build main app');
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Login Page',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.teal,
+        ),
+        body: HomePage(),
+      ),
+    );
   }
+}
+
+class HomePage extends StatefulWidget {
+  HomePage({Key? key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  bool isPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Contoh AppBar'),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  submitLogin('search');
-                },
-                icon: Icon(Icons.search_rounded)),
-            IconButton(
-                onPressed: () {
-                  submitLogin('notification');
-                },
-                icon: Icon(Icons.notifications)),
-          ],
-        ),
-        body: Column(
+    print('build child');
+
+    void submitLogin(String value) {
+      if (usernameController.text == '' || passwordController.text == '') {
+        SnackBar snackBar = const SnackBar(
+          content: Text('Please enter username and password'),
+          duration: Duration(seconds: 2),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const pageTwo()));
+      }
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(left: 50, right: 50, top: 50),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              children: [
-                Flexible(
-                  flex: 1,
-                  child: Container(
-                    alignment: Alignment.topRight,
-                    margin: EdgeInsets.all(5),
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                        color: Colors.blueAccent,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Text('Container 1'),
-                  ),
-                ),
-                Flexible(
-                  flex: 1,
-                  child: Container(
-                    alignment: Alignment.topRight,
-                    margin: EdgeInsets.all(5),
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                        color: Colors.blueAccent,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Text('Container 2'),
-                  ),
-                )
-              ],
+            const Text(
+              'Welcome to login page',
+              style: TextStyle(fontFamily: 'jaro'),
+            ),
+            const SizedBox(height: 50),
+            TextField(
+              controller: usernameController,
+              decoration: const InputDecoration(
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: Colors.teal, width: 2.0)),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  hintText: 'Please enter your username',
+                  labelText: 'Username',
+                  prefixIcon: Icon(Icons.person)),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: passwordController,
+              obscureText: !isPasswordVisible,
+              decoration: InputDecoration(
+                  focusedBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: Colors.teal, width: 2.0)),
+                  border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  hintText: 'Please enter your password',
+                  labelText: 'Password',
+                  prefixIcon: const Icon(Icons.lock),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        isPasswordVisible = !isPasswordVisible;
+                      });
+                    },
+                    icon: Icon(
+                      isPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: Colors.teal,
+                    ),
+                  )),
             ),
             Container(
-              child: Text(
-                'Container 3',
-                style: TextStyle(
-                    fontFamily: 'jaro',
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
-              ),
-              decoration: BoxDecoration(
-                  color: Colors.blueAccent,
-                  borderRadius: BorderRadius.circular(10)),
-              height: 200,
-              width: double.infinity,
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  submitLogin('submit');
-                },
-                child: Text('Submit'))
+                width: 300,
+                height: 40,
+                margin: const EdgeInsets.only(top: 10),
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.teal,
+                        padding: const EdgeInsets.only(top: 10, bottom: 10)),
+                    onPressed: () => submitLogin(usernameController.text),
+                    child: const Text(
+                      'Submit',
+                      style: TextStyle(color: Colors.white),
+                    ))),
           ],
         ),
       ),
