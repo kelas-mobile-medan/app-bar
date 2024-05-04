@@ -51,7 +51,9 @@ class _HomePageState extends State<HomePage> {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       } else {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const pageTwo()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => pageTwo(usernameController.text)));
       }
     }
 

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class pageTwo extends StatelessWidget {
-  const pageTwo({super.key});
+  final String name;
+  const pageTwo(this.name, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class pageTwo extends StatelessWidget {
             style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Colors.teal),
-      body: const Center(child: Text('Ini adalah page kedua')),
+      body: Center(child: Text('Ini adalah page kedua, welcome $name')),
     );
   }
 }
